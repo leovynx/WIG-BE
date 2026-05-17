@@ -1,5 +1,6 @@
 package com.whereitgo.service;
 
+import com.whereitgo.exceptionHandling.WIGUserExceptions;
 import com.whereitgo.model.WIGUser;
 import com.whereitgo.repository.WIGUserRepository;
 import com.whereitgo.utility.UserIdGenerator;
@@ -15,15 +16,16 @@ public class WIGUserService {
 
     private final WIGUserRepository userRepository;
 
-    // CREATE USER
     public WIGUser createUser(WIGUser user) {
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new WIGUserExceptions.EmailAlreadyExistsException(
+                    "Email already exists");
         }
 
         if (userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
-            throw new RuntimeException("Phone number already exists");
+            throw new WIGUserExceptions.PhoneNumberAlreadyExistsException(
+                    "Phone number already exists");
         }
 
         user.setUserId(
@@ -32,24 +34,23 @@ public class WIGUserService {
         return userRepository.save(user);
     }
 
-    // GET USER BY ID
     public WIGUser getUserById(String userId) {
 
         return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() ->
+                        new WIGUserExceptions.UserNotFoundException("User not found"));
     }
 
-    // GET ALL USERS
     public List<WIGUser> getAllUsers() {
 
         return userRepository.findAll();
     }
 
-    // UPDATE USER
     public WIGUser updateUser(String userId, WIGUser updatedUser) {
 
         WIGUser existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() ->
+                        new WIGUserExceptions.UserNotFoundException("User not found"));
 
         existingUser.setUserName(updatedUser.getUserName());
         existingUser.setEmail(updatedUser.getEmail());
@@ -61,11 +62,11 @@ public class WIGUserService {
         return userRepository.save(existingUser);
     }
 
-    // DELETE USER
     public void deleteUser(String userId) {
 
         WIGUser existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() ->
+                        new WIGUserExceptions.UserNotFoundException("User not found"));
 
         userRepository.delete(existingUser);
     }
