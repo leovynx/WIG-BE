@@ -21,8 +21,11 @@ public class WIGUser {
     @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
 
-    @Column(name = "user_name", nullable = false, length = 100)
-    private String userName;
+    @Column(name = "user_name", nullable = false, unique = true, length = 100)
+    private String username;
+
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
     @Column(name = "email", nullable = false, unique = true, length = 150)
     private String email;

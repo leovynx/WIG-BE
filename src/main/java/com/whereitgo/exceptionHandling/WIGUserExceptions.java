@@ -18,10 +18,10 @@ public class WIGUserExceptions {
         }
     }
 
-    public static class PhoneNumberAlreadyExistsException
+    public static class EmailNotFoundException
             extends RuntimeException {
 
-        public PhoneNumberAlreadyExistsException(String message) {
+        public EmailNotFoundException(String message) {
             super(message);
         }
     }

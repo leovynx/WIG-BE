@@ -11,51 +11,52 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandling {
 
-    @ExceptionHandler(WIGUserExceptions.UserNotFoundException.class)
-    public ResponseEntity<?> handleUserNotFound(
-            WIGUserExceptions.UserNotFoundException ex) {
+        @ExceptionHandler(WIGUserExceptions.UserNotFoundException.class)
+        public ResponseEntity<?> handleUserNotFound(
+                        WIGUserExceptions.UserNotFoundException ex) {
 
-        Map<String, Object> error = new HashMap<>();
+                Map<String, Object> error = new HashMap<>();
 
-        error.put("timestamp", LocalDateTime.now());
-        error.put("status", 404);
-        error.put("error", "NOT_FOUND");
-        error.put("message", ex.getMessage());
+                error.put("timestamp", LocalDateTime.now());
+                error.put("status", 404);
+                error.put("error", "NOT_FOUND");
+                error.put("message", ex.getMessage());
 
-        return new ResponseEntity<>(
-                error,
-                HttpStatus.NOT_FOUND);
-    }
+                return new ResponseEntity<>(
+                                error,
+                                HttpStatus.NOT_FOUND);
+        }
 
-    @ExceptionHandler(WIGUserExceptions.EmailAlreadyExistsException.class)
-    public ResponseEntity<?> handleEmailExists(
-            WIGUserExceptions.EmailAlreadyExistsException ex) {
+        @ExceptionHandler(WIGUserExceptions.EmailAlreadyExistsException.class)
+        public ResponseEntity<?> handleEmailExists(
+                        WIGUserExceptions.EmailAlreadyExistsException ex) {
 
-        Map<String, Object> error = new HashMap<>();
+                Map<String, Object> error = new HashMap<>();
 
-        error.put("timestamp", LocalDateTime.now());
-        error.put("status", 409);
-        error.put("error", "CONFLICT");
-        error.put("message", ex.getMessage());
+                error.put("timestamp", LocalDateTime.now());
+                error.put("status", 409);
+                error.put("error", "CONFLICT");
+                error.put("message", ex.getMessage());
 
-        return new ResponseEntity<>(
-                error,
-                HttpStatus.CONFLICT);
-    }
+                return new ResponseEntity<>(
+                                error,
+                                HttpStatus.CONFLICT);
+        }
 
-    @ExceptionHandler(WIGUserExceptions.PhoneNumberAlreadyExistsException.class)
-    public ResponseEntity<?> handlePhoneExists(
-            WIGUserExceptions.PhoneNumberAlreadyExistsException ex) {
+        @ExceptionHandler(WIGUserExceptions.EmailNotFoundException.class)
+        public ResponseEntity<?> handleEmailNotFound(
+                        WIGUserExceptions.EmailNotFoundException ex) {
 
-        Map<String, Object> error = new HashMap<>();
+                Map<String, Object> error = new HashMap<>();
 
-        error.put("timestamp", LocalDateTime.now());
-        error.put("status", 409);
-        error.put("error", "CONFLICT");
-        error.put("message", ex.getMessage());
+                error.put("timestamp", LocalDateTime.now());
+                error.put("status", 500);
+                error.put("error", "CONFLICT");
+                error.put("message", ex.getMessage());
 
-        return new ResponseEntity<>(
-                error,
-                HttpStatus.CONFLICT);
-    }
+                return new ResponseEntity<>(
+                                error,
+                                HttpStatus.CONFLICT);
+        }
+
 }

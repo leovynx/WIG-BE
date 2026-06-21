@@ -13,9 +13,11 @@ public interface WIGUserRepository extends JpaRepository<WIGUser, String> {
 
     Optional<WIGUser> findByPhoneNumber(String phoneNumber);
 
-    Optional<WIGUser> findByUserName(String userName);
+    Optional<WIGUser> findByUsername(String username);
 
     boolean existsByEmail(String email);
 
     boolean existsByPhoneNumber(String phoneNumber);
+
+    Optional<WIGUser> findByUserId(String userId);
 }
