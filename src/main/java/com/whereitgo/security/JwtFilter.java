@@ -1,8 +1,8 @@
 package com.whereitgo.security;
 
-import com.whereitgo.model.WIGUser;
-import com.whereitgo.model.WIGUserPrincipal;
-import com.whereitgo.repository.WIGUserRepository;
+import com.whereitgo.model.User;
+import com.whereitgo.model.UserPrincipal;
+import com.whereitgo.repository.UserRepo;
 import com.whereitgo.service.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,20 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private JWTService jwtService;
 
     @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private WIGUserRepository userRepository;
-
-    // @Override
-    // protected boolean shouldNotFilter(HttpServletRequest request) {
-
-    //     String path = request.getServletPath();
-
-    //     return path.startsWith("/oauth2/")
-    //             || path.startsWith("/login")
-    //             || path.startsWith("/login/oauth2/");
-    // }
+    private UserRepo userRepository;
 
     @Override
     protected void doFilterInternal(
@@ -74,10 +60,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 log.info("Loading user details for userId: {}", userId);
 
                 // ⚠️ IMPORTANT: this assumes username == userId in DB layer
-                WIGUser user = userRepository.findByUserId(userId)
+                User user = userRepository.findByUserId(userId)
                         .orElseThrow(() -> new RuntimeException("User not found"));
 
-                UserDetails userDetails = new WIGUserPrincipal(user);
+                UserDetails userDetails = new UserPrincipal(user);
 
                 log.info("User loaded: {}", userDetails.getUsername());
 

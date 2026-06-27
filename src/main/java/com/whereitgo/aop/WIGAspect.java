@@ -10,7 +10,7 @@ import java.util.Arrays;
 @Aspect
 @Component
 @Slf4j
-public class WIGUserAspect {
+public class WIGAspect {
 
     // Executes for all methods inside service package
     @Around("execution(* com.whereitgo.service.*.*(..))")

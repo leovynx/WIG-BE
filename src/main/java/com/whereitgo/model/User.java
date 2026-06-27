@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WIGUser {
+public class User {
 
     @Id
     @Column(name = "user_id", nullable = false, unique = true)

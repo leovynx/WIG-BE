@@ -1,4 +1,4 @@
-package com.whereitgo.utility;
+package com.whereitgo.utility.httpEntity;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package com.whereitgo.exceptionHandling;
 
-public class WIGUserExceptions {
+public class UserExceptions {
 
      public static class UserNotFoundException
             extends RuntimeException {

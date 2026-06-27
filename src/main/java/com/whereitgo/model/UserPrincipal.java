@@ -7,13 +7,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class WIGUserPrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    private WIGUser user;
+    private User user;
 
-    public WIGUserPrincipal(WIGUser user) {
+    public UserPrincipal(User user) {
         this.user = user;
     }
 

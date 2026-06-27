@@ -1,22 +1,18 @@
-### BASE URL
-@baseUrl = http://localhost:8080
-
----
 
 ### 1. REGISTER USER
-POST http://localhost:8080/api/users
-Content-Type: application/json
+# POST http://localhost:8080/api/users
+# Content-Type: application/json
 
-{
-  "email": "leo@gmail.com",
-  "password": "123456",
-  "username": "Leo"
-}
+# {
+#   "email": "leo@gmail.com",
+#   "password": "123456",
+#   "username": "Leo"
+# }
 
 # ---
 
 # ### 2. LOGIN USER
-# POST {{baseUrl}}/auth/login
+# POST http://localhost:8080/auth/login
 # Content-Type: application/json
 
 # {
@@ -35,31 +31,7 @@ Content-Type: application/json
 # #   }
 # # }
 
-# ---
-
-# ### 3. STORE TOKEN (MANUAL COPY)
-# # Copy token from login response and set it here
-# @token = eyJhbGciOiJIUzI1NiJ9.your_token_here
-
-# ---
 
 ### 4. GET USER PROFILE (PROTECTED API)
 GET http://localhost:8080/api/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJRTVNHMk9GS1Q1OFRHRU1BIiwiaWF0IjoxNzgwMjEwMDU1LCJleHAiOjE3ODAyMjA4NTV9.eEIlJzfSm2Hn8o2UV0V8a-Z2YU-SdFcv_pGMViJ2TvE
-# ---
-
-# ### 5. TEST ANY PROTECTED API
-# GET {{baseUrl}}/home
-# Authorization: Bearer {{token}}
-
-# ---
-
-# ### 6. CREATE PROFILE (if separate API)
-# POST {{baseUrl}}/user/profile
-# Authorization: Bearer {{token}}
-# Content-Type: application/json
-
-# {
-#   "name": "Leo",
-#   "bio": "Backend developer"
-# }
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzRjBJMVNFMkVYUlZJNFMzIiwiaWF0IjoxNzgyNTc4NTgwLCJleHAiOjE3ODI1ODkzODB9.ueBg5ZjLnWu3otEVInrOMeyo7qcvnTFZtWMpQgjGpRk
