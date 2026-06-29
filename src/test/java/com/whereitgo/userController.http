@@ -1,0 +1,20 @@
+# POST http://localhost:8080/api/users
+# Content-Type: application/json
+
+# {
+#   "email": "leo.vynx@gmail.com",
+#   "password": "123456",
+#   "username": "Leo Vinci"
+# }
+
+# GET http://localhost:8080/api/users
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJRQVRUU1pCOExKQ05EUFdCIiwiaWF0IjoxNzgyNzAwODM3LCJleHAiOjE3ODI3MTE2Mzd9.xsgYbiWM7rkde7cIlbLZEVLiIZLH92xUWr9O0Xg2Doc
+
+# POST http://localhost:8080/api/users/login
+# Content-Type: application/json
+
+# {
+#     "username": "Leo Vinci",
+#     "password": "123456"
+# }

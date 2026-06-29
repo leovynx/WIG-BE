@@ -1,0 +1,25 @@
+# POST http://localhost:8080/api/transaction/process-message
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJRQVRUU1pCOExKQ05EUFdCIiwiaWF0IjoxNzgyNzAxNjI2LCJleHAiOjE3ODI3MTI0MjZ9.dWOCwuhkEZP6rJwHX7crXxhIClYvqULbHR2r-uoLQpY
+
+# {
+#   "rawMessage": "ICICI Bank Acct XX528 debited for Rs 12.00 on 24-Jun-26; JUICE POPS credited. UPI:654113534722. Call 18002662 for dispute. SMS BLOCK 528 to 9215676766."
+# }
+
+# PATCH http://localhost:8080/api/transaction/save-message
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJRQVRUU1pCOExKQ05EUFdCIiwiaWF0IjoxNzgyNzAxNjI2LCJleHAiOjE3ODI3MTI0MjZ9.dWOCwuhkEZP6rJwHX7crXxhIClYvqULbHR2r-uoLQpY
+
+# {
+#     "amount": 12.00,
+#     "bankName": "ICICI",
+#     "counterpartyName": "JUICE POPS",
+#     "currency": "INR",
+#     "isUserConfirmed": true,
+#     "rawMessage": "ICICI Bank Acct XX528 debited for Rs 12.00 on 24-Jun-26; JUICE POPS credited. UPI:654113534722. Call 18002662 for dispute. SMS BLOCK 528 to 9215676766.",
+#     "transactionId": 9,
+#     "transactionNotes": "For tea",
+#     "transactionStatus": "SUCCESS",
+#     "transactionTime": "2026-06-24T00:00:00",
+#     "transactionType": "DEBIT"
+#   }

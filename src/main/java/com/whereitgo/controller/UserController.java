@@ -1,10 +1,12 @@
 package com.whereitgo.controller;
 
 import com.whereitgo.model.AuthResponse;
-import com.whereitgo.model.WIGUser;
-import com.whereitgo.utility.WIGResponse;
-import com.whereitgo.utility.WIGResponseStatus;
-import com.whereitgo.service.WIGUserService;
+import com.whereitgo.model.User;
+import com.whereitgo.utility.httpEntity.LoginRequest;
+import com.whereitgo.utility.httpEntity.WIGResponse;
+import com.whereitgo.utility.httpEntity.WIGResponseStatus;
+import com.whereitgo.service.AuthenticationService;
+import com.whereitgo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,14 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class WIGUserController {
+public class UserController {
 
-        private final WIGUserService userService;
+        private final UserService userService;
+        private final AuthenticationService authenticationService;
 
         // CREATE USER
         @PostMapping
         public WIGResponse<AuthResponse> createUser(
-                        @RequestBody WIGUser user) {
+                        @RequestBody User user) {
 
                 String token = userService.createUser(user);
 
@@ -33,9 +36,9 @@ public class WIGUserController {
 
         // GET USER BY ID
         @GetMapping
-        public WIGResponse<WIGUser> getUserById() {
+        public WIGResponse<User> getUserDetails() {
 
-                WIGUser user = userService.getCurrentUser();
+                User user = userService.getCurrentUser();
 
                 return WIGResponse.success(
                                 user,
@@ -45,13 +48,13 @@ public class WIGUserController {
 
         // UPDATE USER
         @PutMapping("/{userId}")
-        public WIGResponse<WIGUser> updateUser(
+        public WIGResponse<User> updateUser(
                         @PathVariable String userId,
-                        @RequestBody WIGUser updatedUser) {
+                        @RequestBody User updatedUser) {
 
-                WIGUser user = userService.updateUser(userId, updatedUser);
+                User user = userService.updateUser(userId, updatedUser);
 
-                return WIGResponse.<WIGUser>builder()
+                return WIGResponse.<User>builder()
                                 .response(user)
                                 .status(
                                                 WIGResponseStatus.builder()
@@ -72,5 +75,15 @@ public class WIGUserController {
                                 "User deleted successfully",
                                 200,
                                 "User deleted successfully");
+        }
+
+        @PostMapping("/login")
+        public WIGResponse<AuthResponse> login(
+                        @RequestBody LoginRequest request) {
+
+                return WIGResponse.success(
+                                authenticationService.login(request),
+                                200,
+                                "Login successful");
         }
 }

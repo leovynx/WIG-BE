@@ -1,10 +1,10 @@
 package com.whereitgo.service;
 
-import com.whereitgo.exceptionHandling.WIGUserExceptions;
+import com.whereitgo.exceptionHandling.UserExceptions;
 import com.whereitgo.model.AuthResponse;
-import com.whereitgo.model.WIGUser;
-import com.whereitgo.model.WIGUserPrincipal;
-import com.whereitgo.repository.WIGUserRepository;
+import com.whereitgo.model.User;
+import com.whereitgo.model.UserPrincipal;
+import com.whereitgo.repository.UserRepo;
 import com.whereitgo.utility.UserIdGenerator;
 
 import lombok.RequiredArgsConstructor;
@@ -21,24 +21,34 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class WIGUserService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
-    private final WIGUserRepository userRepository;
+    private final UserRepo userRepository;
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @Autowired
     private JWTService jwtService;
 
-    public String createUser(WIGUser user) {
+    public String createUser(User user) {
 
-        if (user.getEmail() == null || user.getEmail() == "") {
-            throw new WIGUserExceptions.EmailAlreadyExistsException(
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
+            throw new UserExceptions.EmailNotFoundException(
                     "Email is required");
         }
 
+        if (user.getUsername() == null || user.getUsername().isBlank()) {
+            throw new UserExceptions.UserNotFoundException(
+                    "Username is required");
+        }
+
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new WIGUserExceptions.EmailAlreadyExistsException(
+            throw new UserExceptions.EmailAlreadyExistsException(
                     "Email already exists");
+        }
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new UserExceptions.UserNameAlreadyExistsException(
+                    "User name already exists");
         }
 
         user.setUserId(
@@ -50,21 +60,21 @@ public class WIGUserService implements UserDetailsService {
         return jwtService.generateToken(user.getUserId());
     }
 
-    public WIGUser getUserById(String userId) {
+    public User getUserById(String userId) {
 
         return userRepository.findById(userId)
-                .orElseThrow(() -> new WIGUserExceptions.UserNotFoundException("User not found"));
+                .orElseThrow(() -> new UserExceptions.UserNotFoundException("User not found"));
     }
 
-    public List<WIGUser> getAllUsers() {
+    public List<User> getAllUsers() {
 
         return userRepository.findAll();
     }
 
-    public WIGUser updateUser(String userId, WIGUser updatedUser) {
+    public User updateUser(String userId, User updatedUser) {
 
-        WIGUser existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new WIGUserExceptions.UserNotFoundException("User not found"));
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserExceptions.UserNotFoundException("User not found"));
 
         existingUser.setUsername(updatedUser.getUsername());
         existingUser.setEmail(updatedUser.getEmail());
@@ -78,24 +88,24 @@ public class WIGUserService implements UserDetailsService {
 
     public void deleteUser(String userId) {
 
-        WIGUser existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new WIGUserExceptions.UserNotFoundException("User not found"));
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserExceptions.UserNotFoundException("User not found"));
 
         userRepository.delete(existingUser);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("Testing");
-        WIGUser user = userRepository.findByEmail(email)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
                     System.out.println("User 404");
-                    return new WIGUserExceptions.UserNotFoundException("User not found");
+                    return new UserExceptions.UserNotFoundException("User not found");
                 });
-        return new WIGUserPrincipal(user);
+        return new UserPrincipal(user);
     }
 
-    public WIGUser getCurrentUser() {
+    public User getCurrentUser() {
 
         String userId = SecurityContextHolder.getContext()
                 .getAuthentication()

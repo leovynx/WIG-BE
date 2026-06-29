@@ -1,5 +1,6 @@
 package com.whereitgo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.whereitgo.utility.Gender;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WIGUser {
+public class User {
 
     @Id
     @Column(name = "user_id", nullable = false, unique = true)
@@ -25,6 +26,7 @@ public class WIGUser {
     private String username;
 
     @Column(name = "password", nullable = false, length = 100)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "email", nullable = false, unique = true, length = 150)
