@@ -42,6 +42,9 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionStatus transactionStatus = TransactionStatus.SUCCESS;
 
+    @Column(name = "notes")
+    private String notes;
+
     private BigDecimal amount;
 
     private String currency = "INR";

@@ -27,4 +27,6 @@ public class TransactionDTO {
     private LocalDateTime transactionTime;
 
     private Boolean isUserConfirmed;
+
+    private String transactionNotes;
 }

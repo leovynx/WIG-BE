@@ -54,6 +54,11 @@ public class JwtFilter extends OncePerRequestFilter {
             String userId = jwtService.extractUserId(token);
             log.info("Extracted userId from token: {}", userId);
 
+            if (!jwtService.isTokenValid(token)) {
+                log.error("JWT token got expired");
+                return;
+            }
+
             // 4. Check security context already set
             if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

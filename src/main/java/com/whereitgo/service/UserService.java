@@ -31,14 +31,24 @@ public class UserService implements UserDetailsService {
 
     public String createUser(User user) {
 
-        if (user.getEmail() == null || user.getEmail() == "") {
-            throw new UserExceptions.EmailAlreadyExistsException(
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
+            throw new UserExceptions.EmailNotFoundException(
                     "Email is required");
+        }
+
+        if (user.getUsername() == null || user.getUsername().isBlank()) {
+            throw new UserExceptions.UserNotFoundException(
+                    "Username is required");
         }
 
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserExceptions.EmailAlreadyExistsException(
                     "Email already exists");
+        }
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new UserExceptions.UserNameAlreadyExistsException(
+                    "User name already exists");
         }
 
         user.setUserId(
@@ -85,9 +95,9 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("Testing");
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
                     System.out.println("User 404");
                     return new UserExceptions.UserNotFoundException("User not found");

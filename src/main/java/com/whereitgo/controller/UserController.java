@@ -2,8 +2,10 @@ package com.whereitgo.controller;
 
 import com.whereitgo.model.AuthResponse;
 import com.whereitgo.model.User;
+import com.whereitgo.utility.httpEntity.LoginRequest;
 import com.whereitgo.utility.httpEntity.WIGResponse;
 import com.whereitgo.utility.httpEntity.WIGResponseStatus;
+import com.whereitgo.service.AuthenticationService;
 import com.whereitgo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
         private final UserService userService;
+        private final AuthenticationService authenticationService;
 
         // CREATE USER
         @PostMapping
@@ -33,7 +36,7 @@ public class UserController {
 
         // GET USER BY ID
         @GetMapping
-        public WIGResponse<User> getUserById() {
+        public WIGResponse<User> getUserDetails() {
 
                 User user = userService.getCurrentUser();
 
@@ -72,5 +75,15 @@ public class UserController {
                                 "User deleted successfully",
                                 200,
                                 "User deleted successfully");
+        }
+
+        @PostMapping("/login")
+        public WIGResponse<AuthResponse> login(
+                        @RequestBody LoginRequest request) {
+
+                return WIGResponse.success(
+                                authenticationService.login(request),
+                                200,
+                                "Login successful");
         }
 }

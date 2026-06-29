@@ -180,7 +180,7 @@ public class TransactionService {
         txn.setCounterpartyName(counterparty);
     }
 
-    private TransactionDTO convertToResponse(Transaction transaction) {
+    private TransactionDTO convertToResponse(Transaction transaction, String rawMessage) {
 
         TransactionDTO response = new TransactionDTO();
 
@@ -193,6 +193,7 @@ public class TransactionService {
         response.setCounterpartyName(transaction.getCounterpartyName());
         response.setTransactionTime(transaction.getTransactionTime());
         response.setIsUserConfirmed(transaction.getIsUserConfirmed());
+        response.setRawMessage(rawMessage);
 
         return response;
     }
@@ -213,7 +214,57 @@ public class TransactionService {
 
         transaction = transactionRepo.save(transaction);
 
-        return convertToResponse(transaction);
+        return convertToResponse(transaction, rawMessage.getRawMessage());
+    }
+
+    public String saveTransactionMessage(TransactionDTO message) {
+
+        try {
+
+            User currentUser = userService.getCurrentUser();
+
+            Transaction transaction = transactionRepo.findById(message.getTransactionId())
+                    .orElseThrow(() -> new TransactionExceptions.TransactionNotFoundException(
+                            "Transaction not found"));
+
+            if (!transaction.getUser().getUserId().equals(currentUser.getUserId())) {
+                throw new TransactionExceptions.TransactionAccessDeniedException(
+                        "You are not allowed to update this transaction.");
+            }
+
+            if (Boolean.TRUE.equals(transaction.getIsUserConfirmed())) {
+                throw new TransactionExceptions.TransactionAlreadyConfirmedException(
+                        "Transaction has already been confirmed.");
+            }
+
+            if (Boolean.TRUE.equals(message.getIsUserConfirmed())
+                    && (message.getTransactionNotes() == null
+                            || message.getTransactionNotes().isBlank())) {
+
+                throw new TransactionExceptions.InvalidTransactionNotesException(
+                        "Transaction notes cannot be empty.");
+            }
+
+            transaction.setIsUserConfirmed(Boolean.TRUE.equals(message.getIsUserConfirmed()));
+            transaction.setNotes(message.getTransactionNotes());
+
+            transactionRepo.save(transaction);
+
+            return "Transaction updated successfully.";
+
+        } catch (TransactionExceptions.TransactionNotFoundException
+                | TransactionExceptions.TransactionAccessDeniedException
+                | TransactionExceptions.TransactionAlreadyConfirmedException
+                | TransactionExceptions.InvalidTransactionNotesException ex) {
+
+            // Let GlobalExceptionHandler handle business exceptions
+            throw ex;
+
+        } catch (Exception ex) {
+
+            throw new TransactionExceptions.TransactionUpdateException(
+                    "Failed to update transaction. Please try again later.");
+        }
     }
 
 }

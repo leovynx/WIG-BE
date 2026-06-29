@@ -1,5 +1,6 @@
 package com.whereitgo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.whereitgo.utility.Gender;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,6 +26,7 @@ public class User {
     private String username;
 
     @Column(name = "password", nullable = false, length = 100)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "email", nullable = false, unique = true, length = 150)

@@ -1,7 +1,0 @@
-POST http://localhost:8080/api/transaction/process-message
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzRjBJMVNFMkVYUlZJNFMzIiwiaWF0IjoxNzgyNTc4NTgwLCJleHAiOjE3ODI1ODkzODB9.ueBg5ZjLnWu3otEVInrOMeyo7qcvnTFZtWMpQgjGpRk
-
-{
-  "rawMessage": "ICICI Bank Acct XX528 debited for Rs 12.00 on 24-Jun-26; JUICE POPS credited. UPI:654113534722. Call 18002662 for dispute. SMS BLOCK 528 to 9215676766."
-}
