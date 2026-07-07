@@ -1,0 +1,7 @@
+POST http://localhost:8080/api/dashboard/transactions
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJRQVRUU1pCOExKQ05EUFdCIiwiaWF0IjoxNzgzNDI5MDM4LCJleHAiOjE3ODM0Mzk4Mzh9.HXgZlpXbo7FAnRatslX5zUG20TtS06oa8lwZkQfsk5U
+
+{
+
+}

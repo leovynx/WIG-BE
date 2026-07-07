@@ -23,3 +23,9 @@
 #     "transactionTime": "2026-06-24T00:00:00",
 #     "transactionType": "DEBIT"
 #   }
+
+DELETE http://localhost:8080/api/transaction/delete-message
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJRQVRUU1pCOExKQ05EUFdCIiwiaWF0IjoxNzgzNDI5MDM4LCJleHAiOjE3ODM0Mzk4Mzh9.HXgZlpXbo7FAnRatslX5zUG20TtS06oa8lwZkQfsk5U
+
+[8, 9]

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import com.whereitgo.utility.enums.TransactionStatus;
 import com.whereitgo.utility.enums.TransactionType;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

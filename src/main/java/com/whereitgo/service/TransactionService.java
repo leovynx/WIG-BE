@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -266,5 +268,39 @@ public class TransactionService {
                     "Failed to update transaction. Please try again later.");
         }
     }
+
+   public String deleteTransactionMessage(List<Long> transactionIds) {
+
+    try {
+
+        User currentUser = userService.getCurrentUser();
+
+        for (Long transactionId : transactionIds) {
+
+            Transaction transaction = transactionRepo.findById(transactionId)
+                    .orElseThrow(() -> new TransactionExceptions.TransactionNotFoundException(
+                            "Transaction not found with id: " + transactionId));
+
+            if (!transaction.getUser().getUserId().equals(currentUser.getUserId())) {
+                throw new TransactionExceptions.TransactionAccessDeniedException(
+                        "You are not allowed to delete transaction with id: " + transactionId);
+            }
+
+            transactionRepo.delete(transaction);
+        }
+
+        return "Transactions deleted successfully.";
+
+    } catch (TransactionExceptions.TransactionNotFoundException
+            | TransactionExceptions.TransactionAccessDeniedException ex) {
+
+        throw ex;
+
+    } catch (Exception ex) {
+
+        throw new TransactionExceptions.TransactionDeleteException(
+                "Failed to delete transactions. Please try again later.");
+    }
+}
 
 }
