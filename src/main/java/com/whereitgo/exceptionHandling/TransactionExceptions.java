@@ -68,4 +68,11 @@ public class TransactionExceptions {
             super(message);
         }
     }
+
+    public static class TransactionDeleteException extends RuntimeException {
+
+        public TransactionDeleteException(String message) {
+            super(message);
+        }
+    }
 }

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.whereitgo.utility.httpEntity.WIGResponse;
+
 @RestControllerAdvice
 public class GlobalExceptionHandling {
 
@@ -170,6 +172,40 @@ public class GlobalExceptionHandling {
                 return buildErrorResponse(
                                 HttpStatus.INTERNAL_SERVER_ERROR,
                                 "TRANSACTION_UPDATE_FAILED",
+                                ex.getMessage());
+        }
+
+        @ExceptionHandler(TransactionExceptions.TransactionDeleteException.class)
+        public ResponseEntity<Object> handleTransactionDeleteException(
+                        TransactionExceptions.TransactionUpdateException ex) {
+
+                return buildErrorResponse(
+                                HttpStatus.INTERNAL_SERVER_ERROR,
+                                "TRANSACTION_DELETE_FAILED",
+                                ex.getMessage());
+        }
+
+        // -------------------- Dashboard Exception --------------------
+
+        @ExceptionHandler(DashboardExceptions.DashboardTransactionNotFoundException.class)
+        public ResponseEntity<Object> handleDashboardTransactionNotFound(
+                        DashboardExceptions.DashboardTransactionNotFoundException ex) {
+
+                return buildErrorResponse(
+                                HttpStatus.NOT_FOUND,
+                                "NO_TRANSACTION_FOUND",
+                                ex.getMessage());
+                
+        }
+
+        @ExceptionHandler(DashboardExceptions.DashboardFetchException.class)
+        public ResponseEntity<Object> handleDashboardFetchException(
+                        DashboardExceptions.DashboardFetchException ex) {
+
+
+                return buildErrorResponse(
+                                HttpStatus.INTERNAL_SERVER_ERROR,
+                                "DASHBOARD_ERROR",
                                 ex.getMessage());
         }
 
