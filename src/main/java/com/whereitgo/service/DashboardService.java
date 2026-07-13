@@ -34,11 +34,6 @@ public class DashboardService {
             List<Transaction> transactions = transactionRepo.findAll(
                     filterTransactions(user, filter));
 
-            if (transactions.isEmpty()) {
-                throw new DashboardExceptions.DashboardTransactionNotFoundException(
-                        "No transactions found.");
-            }
-
             List<TransactionDTO> response = new ArrayList<>();
 
             for (Transaction transaction : transactions) {
@@ -54,16 +49,11 @@ public class DashboardService {
                 dto.setCounterpartyName(transaction.getCounterpartyName());
                 dto.setTransactionTime(transaction.getTransactionTime());
                 dto.setIsUserConfirmed(transaction.getIsUserConfirmed());
-
+                dto.setTransactionNotes(transaction.getNotes());
                 response.add(dto);
             }
 
             return response;
-
-        } catch (DashboardExceptions.DashboardTransactionNotFoundException ex) {
-
-            // Let GlobalExceptionHandler handle business exception
-            throw ex;
 
         } catch (Exception ex) {
 
